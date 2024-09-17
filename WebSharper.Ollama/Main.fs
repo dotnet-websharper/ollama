@@ -347,8 +347,8 @@ module Definition =
             Optional = []
         }
 
-    let Ollama = 
-        Class "Ollama" 
+    let OllamaPlugin = 
+        Class "OllamaPlugin" 
         |+> Instance [
             "chat" => ChatRequest?request ^-> T<Promise<_>>[ChatResponse]
             "generate" => GenerateRequest?request ^-> T<Promise<_>>[GenerateResponse]
@@ -364,11 +364,18 @@ module Definition =
             "ps" => T<unit> ^-> T<Promise<_>>[ListResponse]
             "abort" => T<unit> ^-> T<Promise<unit>>
         ]
+        
+    let Ollama = 
+        Class "Ollama" 
+        |+> Static [
+            "Ollama" =? OllamaPlugin
+            |> Import "ollama" "ollama"
+        ]
 
     let Assembly =
         Assembly [
             Namespace "WebSharper.Ollama" [
-                 Ollama; StatusResponse; ErrorResponse; ListResponse; ShowResponse; ModelResponse; ModelDetails; ProgressResponse
+                 Ollama; OllamaPlugin; StatusResponse; ErrorResponse; ListResponse; ShowResponse; ModelResponse; ModelDetails; ProgressResponse
                  EmbeddingsResponse; EmbedResponse; ChatResponse; GenerateResponse; GenerateRequest; EmbeddingsRequest
                  EmbedRequest; ShowRequest; CopyRequest; DeleteRequest; CreateRequest; PushRequest; PullRequest
                  ChatRequest; Tool; ToolFunction; ToolFunctionParameters; Message; Options; ToolCall; ToolCallFunction
