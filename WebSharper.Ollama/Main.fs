@@ -368,7 +368,10 @@ module Definition =
     let Assembly =
         Assembly [
             Namespace "WebSharper.Ollama" [
-                 
+                 Ollama; StatusResponse; ErrorResponse; ListResponse; ShowResponse; ModelResponse; ModelDetails; ProgressResponse
+                 EmbeddingsResponse; EmbedResponse; ChatResponse; GenerateResponse; GenerateRequest; EmbeddingsRequest
+                 EmbedRequest; ShowRequest; CopyRequest; DeleteRequest; CreateRequest; PushRequest; PullRequest
+                 ChatRequest; Tool; ToolFunction; ToolFunctionParameters; Message; Options; ToolCall; ToolCallFunction
             ]
         ]
 
