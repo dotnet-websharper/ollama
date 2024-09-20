@@ -19,12 +19,14 @@ module Client =
             "Paul"
         ]
 
-    let ChatTest() = promise {
-        let request = ChatRequest(
+    let Ollama = new Ollama(Config(host = "http://localhost:5555"))
+
+    let GenerateTest() = promise {
+        let request = GenerateRequest(
             model = "llama3.1",
-            Messages = [| Message(role = "user", content = "Why is the sky blue?") |]
+            prompt = "Why is the sky blue?"
         )   
-        let! response = Ollama.Ollama.Chat(request)
+        let! response = Ollama.Generate(request)
 
         return response;
     }
@@ -44,9 +46,9 @@ module Client =
                 People.Add(newName.Value)
                 newName.Value <- ""
             )
-            .ChatTest(fun _ -> 
+            .GenerateTest(fun _ -> 
                 async {
-                    return! ChatTest().Then(fun response -> printfn $"{response.Message.Content}").AsAsync()
+                    return! GenerateTest().Then(fun response -> printfn $"Response: {response.Response}").AsAsync()
                 }
                 |> Async.Start
             )
