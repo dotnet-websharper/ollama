@@ -23,7 +23,10 @@
             <div>You are about to add: ${Name}</div>
         </div>
         <p>Prompt: 'Why is the sky blue?'</p>
-        <button ws-onclick="GenerateTest">Generate</button>
+        <button ws-onclick="Generate">Generate</button>
+        <p>Prompt: 'Why is the sky blue?'</p>
+        <button ws-onclick="Chat">Chat</button>
+        <p>${ChatResponse}</p>
     </div>
     <script type="module" src="Content/WebSharper.Ollama.Sample.js"></script>
 </body>

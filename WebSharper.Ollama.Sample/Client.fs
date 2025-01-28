@@ -9,10 +9,9 @@ open WebSharper.Ollama
 
 [<JavaScript>]
 module Client =
-    // The templates are loaded from the DOM, so you just can edit index.html
-    // and refresh your browser, no need to recompile unless you add or remove holes.
     type IndexTemplate = Template<"wwwroot/index.html", ClientLoad.FromDocument>
-
+    let ChatResponse = Var.Create ""
+    
     let People =
         ListModel.FromSeq [
             "John"
@@ -30,10 +29,21 @@ module Client =
 
         return response;
     }
+    
+    let ChatTest() = promise {
+        let request = ChatRequest(
+            model = "llama3.1",
+            Messages = [|Message(role = "user", content = "Why is the sky blue?")|]
+        )   
+        let! response = Ollama.Chat(request)
+
+        return response;
+    }
 
     [<SPAEntryPoint>]
     let Main () =
         let newName = Var.Create ""
+
 
         IndexTemplate.Main()
             .ListContainer(
@@ -46,11 +56,20 @@ module Client =
                 People.Add(newName.Value)
                 newName.Value <- ""
             )
-            .GenerateTest(fun _ -> 
+            .Generate(fun _ -> 
                 async {
                     return! GenerateTest().Then(fun response -> printfn $"Response: {response.Response}").AsAsync()
                 }
                 |> Async.Start
             )
+            .Chat(fun _ -> 
+                async {
+                    return! ChatTest().Then(fun response -> 
+                    Var.Set ChatResponse <| response.Message.Content
+                    printfn $"Response: {response.Message.Content}").AsAsync()
+                }
+                |> Async.Start
+            )
+            .ChatResponse(ChatResponse.V)
             .Doc()
         |> Doc.RunById "main"
