@@ -25,6 +25,8 @@ The repository consists of two main projects:
 - [.NET SDK](https://dotnet.microsoft.com/download) installed on your machine.
 - Node.js and npm (for building web assets).
 - WebSharper tools.
+- [Ollama](https://ollama.com/download) installed.
+- The required Ollama model downloaded (e.g., "llama3.1"). Use the Ollama CLI to install models: `ollama pull llama3.1`.
 
 ### Steps
 
